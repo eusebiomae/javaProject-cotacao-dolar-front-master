@@ -1,51 +1,56 @@
-/* Header */
+body, html {
+  font-family: 'Merriweather', serif;
+  margin: 0;
+  padding: 0;
+}
+
 .header {
-    text-align: center;
+  height: 290px;
+
+  @media (max-width: 768px) {
+    padding-inline: 20px;
+  }
 }
 
 .header h1 {
-    font-size: 50px;
+  img {
+    height: auto;
+    width: 350px;
+
+    @media (max-width: 768px) {
+      width: 300px;
+    }
+  }
 }
 
+h2 {
+  font-style: italic;
 
-/* Dolar atual */
-.dolarAtual {
-    text-align: center;
+  @media (max-width: 768px) {
+    font-size: 18px;
+  }
 }
 
-/* Buscar por periodo */
-.buscarPorPeriodo {
-    text-align: center;
-    background-color: aliceblue;
+h3 {
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 }
 
-.buscarPorPeriodo label, button {
-    margin-left: 20px;
-}
+@media (max-width: 768px) {
 
-/* Alerta de erro */
-.errorAlert{
-    text-align: center;
-    color: red;
-}
+  .buscarPorPeriodo {
+    align-items: stretch;
+    flex-direction: column;
+  }
 
-/* Lista do histórico de cotações */
-ul {
-    margin-left: 20%;
-    margin-right: 20%;
-    list-style-type: none;
-    padding: 0;
-}
+  table {
+    font-size: 0.9rem;
+    width: 100%;
+  }
 
-li {
-    background-color: beige;
-    margin-bottom: 5px;
-    padding: 5px;
-    border-radius: 25px;
-}
-
-li span {
-    font-size: 20px;
-    margin-right: 10%;
-    margin-left: 5%;
+  th, td {
+    font-size: 12px;
+    padding: 0.5rem;
+  }
 }

@@ -1,7 +1,15 @@
-import { DatePipe } from '@angular/common';
+import { parse, isValid, format } from 'date-fns';
 import { Component, OnInit } from '@angular/core';
-import { Cotacao } from './cotacao';
-import { CotacaoDolarService } from './cotacaodolar.service';
+import { CotacaoDolarService, Moeda } from './cotacaodolar.service';
+
+export interface Cotacao {
+  preco: number;
+  data: string;
+  hora: string;
+  diferenca?: number;
+  precoTexto?: string;
+  dataTexto?: string;
+}
 
 @Component({
   selector: 'app-root',
@@ -14,30 +22,40 @@ export class AppComponent implements OnInit {
 
   constructor(
     private cotacaoDolarService: CotacaoDolarService,
-    private dateFormat: DatePipe
   ) {}
 
-  public getCotacaoPorPeriodo(
-    dataInicialString: string,
-    dataFinalString: string
-  ): void {
+
+  ngOnInit(): void {
+    this.cotacaoDolarService.getCotacaoAtual().subscribe((moedas: Moeda[]) => {
+      if (moedas.length > 0) {
+        this.cotacaoAtual = moedas[0].preco;
+      }
+    });
+  }
+
+  public getCotacaoPorPeriodo(dataInicialString: string, dataFinalString: string): void {
     this.cotacaoPorPeriodoLista = [];
 
-    const dataInicial = this.dateFormat.transform(dataInicialString, "MM-dd-yyyy") || '';
-    const dataFinal = this.dateFormat.transform(dataFinalString, "MM-dd-yyyy") || '';
+    const dataInicial = parse(dataInicialString, 'yyyy-MM-dd', new Date());
+    const dataFinal = parse(dataFinalString, 'yyyy-MM-dd', new Date());
 
-    if (dataInicial && dataFinal) {
-      this.cotacaoDolarService.getCotacaoPorPeriodoFront(dataInicial, dataFinal).subscribe(cotacoes => {
-        this.cotacaoPorPeriodoLista = cotacoes;
-      })
-    } else {
-      //ALERTA DE ERRO POÍS DATA INICIAL E FINAL SÃO OBRIGATÓRIAS
+    if (!isValid(dataInicial) || !isValid(dataFinal)) {
+      console.error('Data inválida fornecida.');
+      return;
     }
+
+    const dataInicialFormatted = format(dataInicial, 'MM-dd-yyyy');
+    const dataFinalFormatted = format(dataFinal, 'MM-dd-yyyy');
+
+    this.cotacaoDolarService.getCotacoesPeriodo(dataInicialFormatted, dataFinalFormatted)
+      .subscribe((moedas: Moeda[]) => {
+        this.cotacaoPorPeriodoLista = moedas.map((m) => ({
+          ...m,
+          diferenca: +(m.preco - this.cotacaoAtual).toFixed(2),
+          precoTexto: `R$ ${m.preco.toFixed(2)}`,
+          dataTexto: m.data
+        }));
+      });
   }
 
-  ngOnInit() {
-    this.cotacaoDolarService.getCotacaoAtual().subscribe(cotacao => {
-      this.cotacaoAtual = cotacao;
-    })
-  }
 }
