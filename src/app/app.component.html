@@ -29,12 +29,22 @@
         <input id="dataFinal" type="date" name="dataFinal" #dataFinal class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-800" />
       </div>
 
+      <div class="flex items-center">
+        <input id="apenasMenores" type="checkbox" [(ngModel)]="apenasMenores" class="mr-2 w-4 h-4 text-green-900 focus:ring-green-800 border-gray-300 rounded">
+        <label for="apenasMenores" class="font-medium text-sm text-gray-700">Mostrar apenas cotações menores</label>
+      </div>
+
       <button
         class="bg-green-900 text-white rounded-lg px-6 py-2 hover:bg-green-800 transition"
         (click)="getCotacaoPorPeriodo(dataInicial.value, dataFinal.value)"
       >
         Pesquisar
       </button>
+    </div>
+
+    <!-- Mensagem de erro -->
+    <div *ngIf="erroMensagem" class="text-red-600 text-center mb-4">
+      {{ erroMensagem }}
     </div>
 
     <!-- Tabela de resultados -->
@@ -61,6 +71,19 @@
               {{ item.diferenca != null ? (item.diferenca >= 0 ? '+' : '') + item.diferenca.toFixed(2) : 'N/A' }}
             </td>
           </tr>
+
+          <tr *ngIf="cotacaoPorPeriodoLista.length > 0">
+            <td colspan="4" class="px-4 py-2 text-center text-gray-500">
+              Total de cotações encontradas: {{ cotacaoPorPeriodoLista.length }}
+            </td>
+          </tr>
+
+          <!-- Se não houver cotações menores que atual -->
+          <tr *ngIf="cotacaoPorPeriodoLista.length === 0">
+            <td colspan="4" class="px-4 py-6 text-center text-gray-500">
+              Nenhuma cotação encontrada.
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -71,7 +94,6 @@
 <footer class="bg-gray-800 text-white py-6">
   <div class="max-w-5xl mx-auto text-center">
     <p>&copy; 2025 USD Nexus. Todos os direitos reservados.</p>
-    <p>Desenvolvido por <a href="https://emaedev-portfolio.webflow.io/" target="_blank" class="text-green-400 hover:text-green-300">Emaedev</a></p>
+    <p>Desenvolvido por <a href="https://emaedev-portfolio.webflow.io/" target="_blank" class="text-green-400 hover:text-green-300">emaedev</a></p>
   </div>
 </footer>
-

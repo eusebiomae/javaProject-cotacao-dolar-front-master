@@ -28,4 +28,9 @@ export class CotacaoDolarService {
   getCotacoesMenoresQueAtual(data1: string, data2: string): Observable<Moeda[]> {
     return this.http.get<Moeda[]>(`${this.apiUrl}/menores/${data1}/${data2}`);
   }
+
+  getCotacoesMenoresPeriodo(data1: string, data2: string): Observable<Moeda[]> {
+    return this.http.get<Moeda[]>(`${this.apiUrl}/menores/${data1}/${data2}`);
+  }
+
 }
