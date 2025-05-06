@@ -7,9 +7,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CotacaoComponent } from './cotacao/cotacao.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, CotacaoComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

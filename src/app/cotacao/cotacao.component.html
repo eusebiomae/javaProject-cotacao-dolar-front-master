@@ -1,0 +1,85 @@
+<div class="flex-1">
+  <!-- Conteúdo -->
+  <div class="main-content flex-1 max-w-5xl mx-auto px-4 py-6 font-[Merriweather] text-gray-800">
+
+    <!-- Cotação atual -->
+    <div class="mb-6 text-center">
+      <h4>
+        USD - Cotação Atual: <strong class="text-blue-900 text-xl">R$ {{ cotacaoAtual.toFixed(2) }}</strong>
+      </h4>
+      <p class="text-gray-600 pt-6">Explore o histórico de cotações abaixo:</p>
+    </div>
+
+    <!-- Filtros de data -->
+    <div class="flex flex-wrap gap-4 items-end justify-center mb-6">
+      <div class="flex flex-col">
+        <label for="dataInicial" class="font-medium text-sm text-gray-700 mb-1">Data inicial:</label>
+        <input id="dataInicial" type="date" name="dataInicial" #dataInicial class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-800" />
+      </div>
+
+      <div class="flex flex-col">
+        <label for="dataFinal" class="font-medium text-sm text-gray-700 mb-1">Data final:</label>
+        <input id="dataFinal" type="date" name="dataFinal" #dataFinal class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-800" />
+      </div>
+
+      <div class="flex items-center">
+        <input id="apenasMenores" type="checkbox" [(ngModel)]="apenasMenores" class="mr-2 w-4 h-4 text-green-900 focus:ring-green-800 border-gray-300 rounded">
+        <label for="apenasMenores" class="font-medium text-sm text-gray-700">Mostrar apenas cotações menores</label>
+      </div>
+
+      <button
+        class="bg-green-900 text-white rounded-lg px-6 py-2 hover:bg-green-800 transition"
+        (click)="getCotacaoPorPeriodo(dataInicial.value, dataFinal.value)"
+      >
+        Pesquisar
+      </button>
+    </div>
+
+    <!-- Mensagem de erro -->
+    <div *ngIf="erroMensagem" class="text-red-600 text-center mb-4">
+      {{ erroMensagem }}
+    </div>
+
+    <!-- Tabela de resultados -->
+    <div class="overflow-x-auto">
+      <p class="text-base text-green-900 mb-4"><strong>Resultados:</strong></p>
+      <table class="w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
+        <thead class="bg-green-900 text-white">
+          <tr>
+            <th class="px-4 py-2 text-center font-medium">Data</th>
+            <th class="px-4 py-2 text-center font-medium">Hora</th>
+            <th class="px-4 py-2 text-center font-medium">Preço</th>
+            <th class="px-4 py-2 text-center font-medium">Diferença p/ Atual</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of cotacaoPorPeriodoLista" class="hover:bg-gray-100 transition">
+            <td class="px-4 py-2 text-center">{{ item.dataTexto }}</td>
+            <td class="px-4 py-2 text-center">{{ item.hora }}</td>
+            <td class="px-4 py-2 text-center">{{ item.precoTexto }}</td>
+            <td class="px-4 py-2 text-center" [ngStyle]="{
+              color: item.diferenca != null && item.diferenca < 0 ? '#008000' :
+                     item.diferenca != null && item.diferenca > 0 ? '#990000' : '#000'
+            }">
+              {{ item.diferenca != null ? (item.diferenca >= 0 ? '+' : '') + item.diferenca.toFixed(2) : 'N/A' }}
+            </td>
+
+          </tr>
+
+          <tr *ngIf="cotacaoPorPeriodoLista.length > 0">
+            <td colspan="4" class="px-4 py-2 text-center text-gray-500">
+              Total de cotações encontradas: {{ cotacaoPorPeriodoLista.length }}
+            </td>
+          </tr>
+
+          <!-- Se não houver cotações menores que atual -->
+          <tr *ngIf="cotacaoPorPeriodoLista.length === 0">
+            <td colspan="4" class="px-4 py-6 text-center text-gray-500">
+              Nenhuma cotação encontrada.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

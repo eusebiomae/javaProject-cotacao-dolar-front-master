@@ -31,20 +31,3 @@ h3 {
   }
 }
 
-@media (max-width: 768px) {
-
-  .buscarPorPeriodo {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  table {
-    font-size: 0.9rem;
-    width: 100%;
-  }
-
-  th, td {
-    font-size: 12px;
-    padding: 0.5rem;
-  }
-}
