@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CotacaoComponent } from './cotacao/cotacao.component';
+import { CotacaoComponent } from './components/cotacao/cotacao.component';
 
 const routes: Routes = [
   { path: '', component: CotacaoComponent },
